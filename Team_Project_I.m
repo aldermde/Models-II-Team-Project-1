@@ -7,6 +7,18 @@ clc;
 
 load Electricity_Data.mat;
 
+%Clearing some of the bad values.
+%The rest are done below and were done before this was written.
+%Not moving them up here.
+
+for r = 1:5170
+    if Electricity_Data.Total_Production(r) == -9999
+        Electricity_Data.Total_Production(r) = 0;
+    elseif Electricity_Data.Demand(r) == -9999
+        Electricity_Data.Demand(r) = 0;
+    end
+end
+
 val = 0;
 Super_Awesome = val;
 Doctor_Bucks = val;
