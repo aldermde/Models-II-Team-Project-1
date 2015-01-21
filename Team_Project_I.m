@@ -90,6 +90,175 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                val = 1;
            end
        end
+       chartChoice=menu('Please select how you would like to view this information.','Pie Chart of Power Used','Graphs of Contribuiters','Energy Production Chart');
+        switch chartChoice;
+            case 1 %The user has chose to look at a pie chart of production for that year
+                X=find(Electricity_Data.Hydro_Production >-9999 & Electricity_Data.Year==yearChoice);
+                HydroSum=sum(Electricity_Data.Hydro_Production(X)); %Summ of all the Hydro Production for that year
+                
+                Y=find(Electricity_Data.Nuclear_Production >-9999 & Electricity_Data.Year==yearChoice);
+                NuclearSum=sum(Electricity_Data.Nuclear_Production(Y)); % Sum of all of the Nuclear Production for that year
+                
+                Z=find(Electricity_Data.Solar_Production >-9999 & Electricity_Data.Year==yearChoice);
+                SolarSum=sum(Electricity_Data.Solar_Production(Z)); %Sum of all the Solar Production for that year
+                
+                W=find(Electricity_Data.Wind_Production >-9999 & Electricity_Data.Year==yearChoice);
+                WindSum=sum(Electricity_Data.Wind_Production(W)); % Sum of all the Wind Production for that year
+                
+                PieInfo= [HydroSum NuclearSum SolarSum WindSum];
+                
+                Names= {'Hydro','Nuclear','Solar','Wind'}; %Placing those sums into a pie chart with labels
+                
+                
+                
+                PieChart= pie(PieInfo,Names);
+                
+                
+                title('Pie Chart of Power Used in that Year');
+                
+            case 2 % The user has chosen to look at the top and bottom contributors for that year
+                contributerChoice=menu('Would you like to see the top contibuters or the bottom contributers?','Top','Bottom');
+                % Hydro Min & Max
+                X=find(Electricity_Data.Hydro_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Hydro1=sort(Electricity_Data.Hydro_Production(X));
+                Hydro2=sort(Electricity_Data.Hydro_Production(X),'descend');
+                HydroMin=Hydro1(1:10);
+                HydroMax=Hydro2(1:10);
+                
+                %Hydro Min and Max Country Location
+                HydroPositionMin=find(Electricity_Data.Hydro_Production>=Hydro1(1) & Electricity_Data.Hydro_Production<=Hydro1(10)& Electricity_Data.Year==yearChoice); %Min Value locations Least to greatest
+                HydroPositionMax=find(Electricity_Data.Hydro_Production>=Hydro2(10) & Electricity_Data.Year==yearChoice); %Max Value locations Least to greatest
+                HydroMinCountries=(Electricity_Data.Country(HydroPositionMin));
+                HydroMaxCountries=(Electricity_Data.Country(HydroPositionMax));
+                
+                %Nuclear Min & Max
+                X1=find(Electricity_Data.Nuclear_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Nuclear1=sort(Electricity_Data.Nuclear_Production(X1));
+                Nuclear2=sort(Electricity_Data.Nuclear_Production(X1),'descend');
+                NuclearMin=Nuclear1(1:10);
+                NuclearMax=Nuclear2(1:10);
+                
+                %Nuclear Min and Max Country Location
+                NuclearPositionMin=find(Electricity_Data.Nuclear_Production>=Nuclear1(1) &Electricity_Data.Nuclear_Production<=Nuclear1(10)& Electricity_Data.Year==yearChoice); %Min Value locations Least to greatest
+                NuclearPositionMax=find(Electricity_Data.Nuclear_Production>=Nuclear2(10) & Electricity_Data.Year==yearChoice); %Max Value locations Least to greatest
+                NuclearMinCountries=(Electricity_Data.Country(NuclearPositionMin));
+                NuclearMaxCountries=(Electricity_Data.Country(NuclearPositionMax));
+                
+                %Solar Min & Max
+                X2=find(Electricity_Data.Solar_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Solar1=sort(Electricity_Data.Solar_Production(X2));
+                Solar2=sort(Electricity_Data.Solar_Production(X2),'descend');
+                SolarMin=Solar1(1:10);
+                SolarMax=Solar2(1:10);
+                
+                SolarPositionMin=find(Electricity_Data.Solar_Production>=Solar1(1) &Electricity_Data.Solar_Production<=Solar1(10)& Electricity_Data.Year==yearChoice); %Min Value locations Least to greatest
+                SolarPositionMax=find(Electricity_Data.Solar_Production>=Solar2(10) & Electricity_Data.Year==yearChoice); %Max Value locations Least to greatest
+                SolarMinCountries=(Electricity_Data.Country(SolarPositionMin));
+                SolarMaxCountries=(Electricity_Data.Country(SolarPositionMax));
+                
+                %Wind Min & Max
+                X3=find(Electricity_Data.Wind_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Wind1=sort(Electricity_Data.Wind_Production(X3));
+                Wind2=sort(Electricity_Data.Wind_Production(X3),'descend');
+                WindMin=Solar1(1:10);
+                WindMax=Solar2(1:10);
+                
+                WindPositionMin=find(Electricity_Data.Wind_Production>=Wind1(1) &Electricity_Data.Wind_Production<=Wind1(10)& Electricity_Data.Year==yearChoice); %Min Value locations Least to greatest
+                WindPositionMax=find(Electricity_Data.Wind_Production>=Wind2(10) & Electricity_Data.Year==yearChoice); %Max Value locations Least to greatest
+                WindMinCountries=(Electricity_Data.Country(WindPositionMin));
+                WindMaxCountries=(Electricity_Data.Country(WindPositionMax));
+                
+                %Total Min & Max
+                X4=find(Electricity_Data.Total_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Total1=sort(Electricity_Data.Total_Production(X4));
+                Total2=sort(Electricity_Data.Total_Production(X4),'descend');
+                TotalMin=Total1(1:10);
+                TotalMax=Total2(1:10);
+                
+                TotalPositionMin=find(Electricity_Data.Total_Production>=Total1(1) &Electricity_Data.Total_Production<=Total1(10)& Electricity_Data.Year==yearChoice); %Min Value locations Least to greatest
+                TotalPositionMax=find(Electricity_Data.Total_Production>=Total2(10) & Electricity_Data.Year==yearChoice); %Max Value locations Least to greatest
+                TotalMinCountries=(Electricity_Data.Country(TotalPositionMin));
+                TotalMaxCountries=(Electricity_Data.Country(TotalPositionMax));
+                
+                
+                switch contributerChoice
+                    case 1
+                        subplot(2,3,1)
+                        bar(HydroMax,'b')
+                        title('Top ten Hydro Contributers');
+                        %Country_Strings={HydroMaxCountries};
+                        set(gca,'XTick',1:length(HydroMaxCountries'));
+                        set(gca,'XTickLabel',HydroMaxCountries');
+                        ylabel('Power (kWh,millions)')
+                        
+                        subplot(2,3,2)
+                        bar(NuclearMax,'g')
+                        title('Top Ten Nuclear Contributers');
+                        set(gca,'XTick',1:length(NuclearMaxCountries'));
+                        set(gca,'XTickLabel',NuclearMaxCountries');
+                        ylabel('Power (kWh,millions)')
+                        
+                        subplot(2,3,3)
+                        bar(SolarMax,'y')
+                        title('Top Ten Solar Contributers');
+                        set(gca,'XTick',1:length(SolarMaxCountries'));
+                        set(gca,'XTickLabel',SolarMaxCountries');
+                        ylabel('Power (kWh,millions)')
+                        
+                        subplot(2,3,4)
+                        bar(WindMax,'m')
+                        title('Top Ten Wind Contributers');
+                        set(gca,'XTick',1:length(WindMaxCountries'));
+                        set(gca,'XTickLabel',WindMaxCountries');
+                        ylabel('Power (kWh,millions)')
+                        
+                        subplot(2,3,5)
+                        bar(TotalMax,'r')
+                        title('Top Ten Total Contributers');
+                        set(gca,'XTick',1:length(TotalMaxCountries'));
+                        set(gca,'XTickLabel',TotalMaxCountries');
+                        ylabel('Power (kWh,millions)')
+                        
+                        
+                    case 2
+                        subplot(2,3,1)
+                        bar(HydroMin,'b')
+                        title('Bottom Ten Hydro Contributers');
+                        set(gca,'XTick',1:length(HydroMinCountries'));
+                        set(gca,'XTickLabel',HydroMinCountries');
+                        ylabel('Power (kWh,millions)')
+                        
+                        subplot(2,3,2)
+                        bar(NuclearMin,'g')
+                        title('Bottom Ten Nuclear Contributers');
+                        set(gca,'XTick',1:length(NuclearMinCountries'));
+                        set(gca,'XTickLabel',NuclearMinCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        subplot(2,3,3)
+                        bar(SolarMin,'y')
+                        title('Bottom Ten Solar Contributers');
+                        set(gca,'XTick',1:length(SolarMinCountries'));
+                        set(gca,'XTickLabel',SolarMinCountries');
+                        ylabel('Power (kWh,millions)')
+                        
+                        subplot(2,3,4)
+                        bar(WindMin,'m')
+                        title('Bottom Ten Wind Contributers');
+                        set(gca,'XTick',1:length(WindMinCountries'));
+                        set(gca,'XTickLabel',WindMinCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        subplot(2,3,5);
+                        bar(TotalMin,'r');
+                        title('Bottom Ten Total Contributers');
+                        set(gca,'XTick',1:length(TotalMinCountries'));
+                        set(gca,'XTickLabel',TotalMinCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                end
+        end
+end
     end
     %End Year Selection
     
