@@ -461,6 +461,202 @@ end
     while val == 30
         productionChoice = menu('Please select a production type:', 'Hydro','Solar','Wind','Nuclear','Total Production','Back');
         
+        switch productionChoice
+             %Runs analysis of Hydro Production
+             case 1
+                 %Replaces values of -9999 with 0
+                 for r = 1:5170
+                    if Electricity_Data.Hydro_Production(r) == -9999
+                    Electricity_Data.Hydro_Production(r) = 0;
+                    end
+                    if Electricity_Data.Total_Production(r) == -9999
+                        Electricity_Data.Total_Production(r) = 0;
+                    end
+                 end
+                 %Creates a vector with all of the country names
+                 for m = 1:235
+                     countries(m) = Electricity_Data.Country(m*22);
+                 end
+                 %Sums up all countries total Hydro production
+                for c = 1:235
+                    CountryProduction(c) = sum(Electricity_Data.Hydro_Production(find(strcmp(Electricity_Data.Country,countries(c)))));
+                end
+               %Creates a vector with Hyrdo Production for each year
+                for t = 1990:2011
+                    Production_Time(t-1989) = sum(Electricity_Data.Hydro_Production(Electricity_Data.Year == t));
+                end
+                %Creates variable for pie chart data
+                x = [sum(Electricity_Data.Hydro_Production(1:5170)), ((sum(Electricity_Data.Total_Production(1:5170))-sum(Electricity_Data.Hydro_Production(1:5170))))];
+
+                 %Sorts Hyrdo production in order from most to least and
+                 %vice versa
+                HydroProduction_min = sort(CountryProduction);
+                HydroProduction_max = sort(CountryProduction,'descend');
+                %Subplots all data
+                subplot(2,2,1); bar(HydroProduction_max(1:10));
+                title('Top Ten Contributers');ylabel('kWh, millions');legend('')
+                subplot(2,2,2); bar(HydroProduction_min(66:75));
+                title('Lowest Ten Contributers');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,3); plot(1990:2011,Production_Time);
+                title('Production Over time');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,4);pie(x);
+                title('Percent of Total Production');legend('Hydro Production','Other');
+                set(gcf,'units','normalized','outerposition',[0 0 1 1]);
+                
+            %Does same thing as case 1, but with Solar Production
+             case 2
+                
+                 for r = 1:5170
+                    if Electricity_Data.Solar_Production(r) == -9999
+                    Electricity_Data.Solar_Production(r) = 0;
+                    end
+                    if Electricity_Data.Total_Production(r) == -9999
+                        Electricity_Data.Total_Production(r) = 0;
+                    end
+                 end
+                 
+                 for m = 1:235
+                     Countries(m) = Electricity_Data.Country(m*22);
+                 end
+                 
+                for c = 1:235
+                    CountryProduction(c) = sum(Electricity_Data.Solar_Production(find(strcmp(Electricity_Data.Country,Countries(c)))));
+                end
+                
+                for t = 1990:2011
+                    Production_Time(t-1989) = sum(Electricity_Data.Solar_Production(Electricity_Data.Year == t));
+                end
+                
+                x = [sum(Electricity_Data.Solar_Production(1:5170)), ((sum(Electricity_Data.Total_Production(1:5170))-sum(Electricity_Data.Solar_Production(1:5170))))];
+                
+                SolarProduction_min = sort(CountryProduction);
+                SolarProduction_max = sort(CountryProduction,'descend');
+                subplot(2,2,1); bar(SolarProduction_max(1:10));
+                title('Top Ten Contributers');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,2); bar(SolarProduction_min(174:183));
+                title('Lowest Ten Contributers');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,3); plot(1990:2011,Production_Time);
+                title('Production Over time');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,4);pie(x);
+                title('Percent of Total Production');legend('Solar Production','Other');
+                set(gcf,'units','normalized','outerposition',[0 0 1 1]);
+
+                
+              %Repeats process for Wind Production  
+             case 3
+                %Replaces values of -9999 with 0
+                 for r = 1:5170
+                    if Electricity_Data.Wind_Production(r) == -9999
+                    Electricity_Data.Wind_Production(r) = 0;
+                    end
+                    if Electricity_Data.Total_Production(r) == -9999
+                        Electricity_Data.Total_Production(r) = 0;
+                    end
+                 end
+                 %Creates a vector with all of the country names
+                 for m = 1:235
+                     Countries(m) = Electricity_Data.Country(m*22);
+                 end
+                 
+                for c = 1:235
+                    CountryProduction(c) = sum(Electricity_Data.Wind_Production(find(strcmp(Electricity_Data.Country,Countries(c)))));
+                end
+                
+                for t = 1990:2011
+                Production_Time(t-1989) = sum(Electricity_Data.Wind_Production(Electricity_Data.Year == t));
+                end
+                
+                x = [sum(Electricity_Data.Wind_Production(1:5170)), ((sum(Electricity_Data.Total_Production(1:5170))-sum(Electricity_Data.Wind_Production(1:5170))))];
+                
+                WindProduction_min = sort(CountryProduction);
+                WindProduction_max = sort(CountryProduction,'descend');
+                subplot(2,2,1); bar(WindProduction_max(1:10));
+                title('Top Ten Contributers');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,2); bar(WindProduction_min(152:161));
+                title('Lowest Ten Contributers');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,3); plot(1990:2011,Production_Time);
+                title('Production Over time');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,4);pie(x);
+                title('Percent of Total Production');legend('Wind Production','Other');
+                set(gcf,'units','normalized','outerposition',[0 0 1 1]);
+
+               %Repeats process for Nuclear Production 
+             case 4
+                
+                 for r = 1:5170
+                    if Electricity_Data.Nuclear_Production(r) == -9999
+                    Electricity_Data.Nuclear_Production(r) = 0;
+                    end
+                    if Electricity_Data.Total_Production(r) == -9999
+                        Electricity_Data.Total_Production(r) = 0;
+                    end
+                 end
+                 
+                 for m = 1:235
+                     Countries(m) = Electricity_Data.Country(m*22);
+                 end
+                 
+                 for c = 1:235
+                    CountryProduction(c) = sum(Electricity_Data.Nuclear_Production(find(strcmp(Electricity_Data.Country,Countries(c)))));
+                 end
+                 
+                 for t = 1990:2011
+                Production_Time(t-1989) = sum(Electricity_Data.Nuclear_Production(Electricity_Data.Year == t));
+                 end
+                
+                 x = [sum(Electricity_Data.Nuclear_Production(1:5170)), ((sum(Electricity_Data.Total_Production(1:5170))-sum(Electricity_Data.Nuclear_Production(1:5170))))];
+                 
+                NuclearProduction_min = sort(CountryProduction);
+                NuclearProduction_max = sort(CountryProduction,'descend');
+                subplot(2,2,1); bar(NuclearProduction_max(1:10));
+                title('Top Ten Contributers');ylabel('kWh, millions');legend('1. United States','2. China','3.')
+                subplot(2,2,2); bar(NuclearProduction_min(199:208));
+                title('Lowest Ten Contributers');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,3); plot(1990:2011,Production_Time);
+                title('Production Over time');ylabel('kWh, millions');xlabel('');
+                subplot(2,2,4);pie(x);
+                title('Percent of Total Production');legend('Nuclear Production','Other');
+                set(gcf,'units','normalized','outerposition',[0 0 1 1]);
+
+              %Repeats process for Total Production  
+             case 5
+
+                %Replaces values of -9999 with 0
+                for r = 1:5170
+                    if Electricity_Data.Total_Production(r) == -9999
+                    Electricity_Data.Total_Production(r) = 0;
+                    end
+                    if Electricity_Data.Total_Production(r) == -9999
+                        Electricity_Data.Total_Production(r) = 0;
+                    end
+                end
+                
+                for m = 1:235
+                     Countries(m) = Electricity_Data.Country(m*22);
+                 end
+    
+                for c = 1:235
+                    CountryProduction(c) = sum(Electricity_Data.Total_Production(find(strcmp(Electricity_Data.Country,Countries(c)))));
+                end
+                
+                for t = 1990:2011
+                Production_Time(t-1989) = sum(Electricity_Data.Total_Production(Electricity_Data.Year == t));
+                end
+
+                x = [sum(Electricity_Data.Hydro_Production(1:5170)), ((sum(Electricity_Data.Total_Production(1:5170))-sum(Electricity_Data.Hydro_Production(1:5170))))];
+                
+                TotalProduction_min = sort(CountryProduction);
+                TotalProduction_max = sort(CountryProduction,'descend');
+                subplot(1,3,1); bar(TotalProduction_max(1:10));
+                title('Top Ten Contributers');ylabel('kWh, millions');
+                subplot(1,3,2); bar(TotalProduction_min(1:10));
+                title('Lowest Ten Contributers');ylabel('kWh, millions');
+                
+                subplot(1,3,3); plot(1990:2011,Production_Time);
+                title('Production Over time');ylabel('kWh, millions');
+                set(gcf,'units','normalized','outerposition',[0 0 1 1]);
+
+         end
         if productionChoice == 6
             val = 1;
         end
