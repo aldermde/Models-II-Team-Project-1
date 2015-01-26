@@ -749,6 +749,11 @@ end
 end
 warning('on','all'); %Reenables warnings just in case.
 
+
 %ending message
 fprintf('Thank you for using our program.\n\n\n');
 spy
+pause(0.5);
+close;
+pause(2);
+clc;
