@@ -1,5 +1,10 @@
 %Models II Team Project I
-%Group:
+%Group: Duaine, Cole, Michael, Jacob Fedders
+%
+%This program loads a set of data and provides the user with options on how
+%to anlaze it.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all;
 close all;
@@ -10,7 +15,6 @@ load Electricity_Data.mat;
 %Clearing some of the bad values.
 %The rest are done below and were done before this was written.
 %Not moving them up here.
-
 for r = 1:5170
     if Electricity_Data.Total_Production(r) == -9999
         Electricity_Data.Total_Production(r) = 0;
@@ -25,8 +29,11 @@ Doctor_Bucks = val;
 
 warning('off','all'); %Disables unneeded warning messages that may appear.
 
+
+
 while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
      
+    %User adjusts Command Window to proper size
     while val == 0
         fprintf('KEEP THIS LINE HIDDEN\n');
         fprintf('Press any key to continue.\n*\n*\n');
@@ -56,7 +63,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
     %End Analysis Selection
     
     
-    % Year Selection
+% Year Selection
     while val == 10
        fprintf('Please select a year from 1990 to 2011 \n \nTo go back, enter ''1''.\n\n');
        commandwindow;
@@ -90,6 +97,8 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                val = 1;
            end
        end
+       
+       %menu of how to analyze year data
        chartChoice=menu('Please select how you would like to view this information.','Pie Chart of Power Used','Graphs of Contribuiters');
         switch chartChoice;
             case 1 %The user has chose to look at a pie chart of production for that year
@@ -176,7 +185,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                 switch contributerChoice
                     case 1
                         %Hydro Max Contributers
-                        figure(1);
+                        figure;
                         bar(HydroMax,'b');
                         title('Top ten Hydro Contributers');
                         set(gca,'XTick',1:length(HydroMaxCountries'));
@@ -184,7 +193,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Nuclear Max Contributers
-                        figure(2);
+                        figure;
                         bar(NuclearMax,'g');
                         title('Top Ten Nuclear Contributers');
                         set(gca,'XTick',1:length(NuclearMaxCountries'));
@@ -192,7 +201,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Solar Max Contributers
-                        figure(3);
+                        figure;
                         bar(SolarMax,'y');
                         title('Top Ten Solar Contributers');
                         set(gca,'XTick',1:length(SolarMaxCountries'));
@@ -200,7 +209,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Wind Max Contributers
-                        figure(4);
+                        figure;
                         bar(WindMax,'m');
                         title('Top Ten Wind Contributers');
                         set(gca,'XTick',1:length(WindMaxCountries'));
@@ -208,7 +217,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Total Max Contributers
-                        figure(5);
+                        figure;
                         bar(TotalMax,'r');
                         title('Top Ten Total Contributers');
                         set(gca,'XTick',1:length(TotalMaxCountries'));
@@ -218,7 +227,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         
                     case 2
                         %Hydro Min Contributers
-                        figure(1);
+                        figure;
                         bar(HydroMin,'b');
                         title('Bottom Ten Hydro Contributers');
                         set(gca,'XTick',1:length(HydroMinCountries'));
@@ -226,7 +235,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Nuclear Min Contributers
-                        figure(2);
+                        figure;
                         bar(NuclearMin,'g');
                         title('Bottom Ten Nuclear Contributers');
                         set(gca,'XTick',1:length(NuclearMinCountries'));
@@ -234,7 +243,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Solar Min Contributers
-                        figure(3);
+                        figure;
                         bar(SolarMin,'y');
                         title('Bottom Ten Solar Contributers');
                         set(gca,'XTick',1:length(SolarMinCountries'));
@@ -242,7 +251,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Wind Min Contributers
-                        figure(4);
+                        figure;
                         bar(WindMin,'m');
                         title('Bottom Ten Wind Contributers');
                         set(gca,'XTick',1:length(WindMinCountries'));
@@ -250,7 +259,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                         
                         %Total Min Contributers
-                        figure(5);
+                        figure;
                         bar(TotalMin,'r');
                         title('Bottom Ten Total Contributers');
                         set(gca,'XTick',1:length(TotalMinCountries'));
@@ -258,12 +267,50 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         ylabel('Power (kWh,millions)');
                 end
         end
+        
+        %Ask the user what they want to do next
+        nextChoice = menu('Now what would you like to do?','Analyze a year','Analyze a country','Analyze a production type','End program');
+            
+            if nextChoice == 1
+                val = 10;
+            elseif nextChoice == 2
+                val = 20;
+            elseif nextChoice == 3
+                val = 30;
+            elseif nextChoice == 4
+                val = -1;
+                Super_Awesome = 7;
+            end
+            
+            clc;
+        
+        %Asks the user what charts they want to keep open
+        closeChoice = menu('Do you want to keep any charts open?','Keep all charts','Close only the most recent chart','Close all charts');
+                                               
+            if closeChoice == 2  % close only most recent
+                if chartChoice == 2
+                    for k = 1:5 %Clears 5 charts
+                        close;
+                    end
+                else
+                    close;
+                end
+            elseif closeChoice == 3  % close EVERYTHING
+                close all;
+            end  % end close menu
+        
 end
-    end
-    %End Year Selection
+    
+    %End Year Analysis
     
     
-    %Country Selection
+    
+    
+    
+    
+    
+    
+    %Country Analysis
     while val == 20 
         countryChoice = menu('Please select a country:', 'America', 'Australia', 'Brazil', 'Canada', 'China', 'Cuba', 'Germany', 'India', 'Japan', 'Madagascar', 'Input Other','Back');
                 if countryChoice == 11 %chooses to input country
@@ -391,7 +438,7 @@ end
             %shouldn't be covered.
             fprintf('|------------------------------------|\n|     If charts are difficult        |\n|      to read, increase size,       |\n|       but do not cover this        | \n|               box.                 |\n| _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|\n');
             
-            nextChoice = menu('Now what would you like to do?','Analyze a year','Analyze another country','Analyze a production type');
+            nextChoice = menu('Now what would you like to do?','Analyze a year','Analyze a country','Analyze a production type','End program');
             
             if nextChoice == 1
                 val = 10;
@@ -399,6 +446,9 @@ end
                 val = 20;
             elseif nextChoice == 3
                 val = 30;
+            elseif nextChoice == 4
+                val = -1;
+                Super_Awesome = 7;
             end
             
             clc;
@@ -454,8 +504,15 @@ end
             end  % end close menu
         end %end line 124 if structure
     end
-    %End Country Selection
+%End Country Data Analysis
     
+    
+
+
+
+
+
+
     
     %Production TypeSelection
     while val == 30
@@ -656,11 +713,41 @@ end
                 title('Production Over time');ylabel('kWh, millions');
                 set(gcf,'units','normalized','outerposition',[0 0 1 1]);
 
-         end
+        end
+        
+        %Ask the user what they want to do next
+        nextChoice = menu('Now what would you like to do?','Analyze a year','Analyze a country','Analyze a production type','End program');
+            
+            if nextChoice == 1
+                val = 10;
+            elseif nextChoice == 2
+                val = 20;
+            elseif nextChoice == 3
+                val = 30;
+            elseif nextChoice == 4
+                val = -1;
+                Super_Awesome = 7;
+            end
+            
+            clc;
+        
+        %Asks the user what charts they want to keep open
+        closeChoice = menu('Do you want to keep any charts open?','Keep all charts','Close only the most recent chart','Close all charts');
+                                               
+            if closeChoice == 2  % close only most recent
+                close
+            elseif closeChoice == 3  % close EVERYTHING
+                close all;
+            end  % end close menu
+        
+            %Back option. Returns to begining
         if productionChoice == 6
             val = 1;
         end
     end
 
+end
 warning('on','all'); %Reenables warnings just in case.
 
+%ending message
+fprintf('Thank you for using our program.\n');
