@@ -750,4 +750,5 @@ end
 warning('on','all'); %Reenables warnings just in case.
 
 %ending message
-fprintf('Thank you for using our program.\n');
+fprintf('Thank you for using our program.\n\n\n');
+spy
