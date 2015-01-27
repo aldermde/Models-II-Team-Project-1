@@ -18,7 +18,8 @@ load Electricity_Data.mat;
 for r = 1:5170
     if Electricity_Data.Total_Production(r) == -9999
         Electricity_Data.Total_Production(r) = 0;
-    elseif Electricity_Data.Demand(r) == -9999
+    end
+    if Electricity_Data.Demand(r) == -9999
         Electricity_Data.Demand(r) = 0;
     end
 end
