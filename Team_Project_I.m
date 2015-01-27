@@ -18,8 +18,7 @@ load Electricity_Data.mat;
 for r = 1:5170
     if Electricity_Data.Total_Production(r) == -9999
         Electricity_Data.Total_Production(r) = 0;
-    end
-    if Electricity_Data.Demand(r) == -9999
+    elseif Electricity_Data.Demand(r) == -9999
         Electricity_Data.Demand(r) = 0;
     end
 end
@@ -129,56 +128,113 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                 
             case 2 % The user has chosen to look at the top and bottom contributors for that year
                 contributerChoice=menu('Would you like to see the top contibuters or the bottom contributers?','Top Ten Contributers','Bottom Ten Contributers');
+               
+                
                 % Hydro Min & Max
+                
                 X=find(Electricity_Data.Hydro_Production> -9999 & Electricity_Data.Year==yearChoice);
                 Hydro1=sort(Electricity_Data.Hydro_Production(X));
                 Hydro2=sort(Electricity_Data.Hydro_Production(X),'descend');
-                HydroMin=Hydro1(1:10);
-                HydroMax=Hydro2(1:10);
-                
+               
+                 size1=numel(X)
+                if size1<10
+                    size1=numel(X)
+                elseif size1 >=10
+                    size1=10
+                end
+                HydroMin=Hydro1(1:size1);
+                HydroMax=Hydro2(1:size1);
+               
                 %Nuclear Min & Max
                 X1=find(Electricity_Data.Nuclear_Production> -9999 & Electricity_Data.Year==yearChoice);
                 Nuclear1=sort(Electricity_Data.Nuclear_Production(X1));
                 Nuclear2=sort(Electricity_Data.Nuclear_Production(X1),'descend');
-                NuclearMin=Nuclear1(1:10);
-                NuclearMax=Nuclear2(1:10);
+             
+                 size2=numel(X1)
+                if size2<10
+                    size2=numel(X1)
+                elseif size2 >=10
+                    size2=10
+                end
+                
+                   NuclearMin=Nuclear1(1:size2);
+                NuclearMax=Nuclear2(1:size2);
+                
                 
                 %Solar Min & Max
                 X2=find(Electricity_Data.Solar_Production> -9999 & Electricity_Data.Year==yearChoice);
                 Solar1=sort(Electricity_Data.Solar_Production(X2));
                 Solar2=sort(Electricity_Data.Solar_Production(X2),'descend');
-                SolarMin=Solar1(1:10);
-                SolarMax=Solar2(1:10);
+               
                 
+                 size3=numel(X2)
+                if size3<10
+                    size3=numel(X2)
+                elseif size3 >=10
+                    size3=10
+                end
+                
+                SolarMin=Solar1(1:size3);
+                SolarMax=Solar2(1:size3);
                 %Wind Min & Max
                 X3=find(Electricity_Data.Wind_Production> -9999 & Electricity_Data.Year==yearChoice);
                 Wind1=sort(Electricity_Data.Wind_Production(X3));
                 Wind2=sort(Electricity_Data.Wind_Production(X3),'descend');
-                WindMin=Wind1(1:10);
-                WindMax=Wind2(1:10);
                 
+                
+                 size4=numel(X3)
+                if size4<10
+                    size4=numel(X3)
+                elseif size4 >=10
+                    size4=10
+                end
+                WindMin=Wind1(1:size4);
+                WindMax=Wind2(1:size4);
                 %Total Min & Max
                 X4=find(Electricity_Data.Total_Production> -9999 & Electricity_Data.Year==yearChoice & Electricity_Data.Demand > -9999);
                 Total1=sort(Electricity_Data.Total_Production(X4));
                 Total2=sort(Electricity_Data.Total_Production(X4),'descend');
-                TotalMin=Total1(1:10);
-                TotalMax=Total2(1:10);
-                 
+                
+                
+                 size5=numel(X4);
+                if size5<10;
+                    size5=numel(X4);
+                elseif size5 >=10;
+                    size5=10;
+                end
+                 TotalMin=Total1(1:size5);
+                TotalMax=Total2(1:size5);
                 %Country Location Max
-                for k=1:10;
+                for k=1:size1;
                     HydroMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Hydro_Production==HydroMax(k))};
-                    NuclearMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Nuclear_Production==NuclearMax(k))};
-                    SolarMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Solar_Production==SolarMax(k))};
-                    WindMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Wind_Production==WindMax(k))};
-                    TotalMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMax(k))};
+                end
+                  for k=1:size2; 
+                      NuclearMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Nuclear_Production==NuclearMax(k))};
+                  end
+                     for k=1:size3;
+                         SolarMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Solar_Production==SolarMax(k))};
+                     end
+                   for k=1:size4; 
+                       WindMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Wind_Production==WindMax(k))};
+                   end
+                   for k=1:size5; 
+                       TotalMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMax(k))};
                 end
                 
                 %Country Location Min
-                for k=1:10;
+                for k=1:size1;
                     HydroMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Hydro_Production==HydroMin(k))};
+                end
+                for k=1:size2;
                     NuclearMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Nuclear_Production==NuclearMin(k))};
+                end
+                for k=1:size3;
                     SolarMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Solar_Production==SolarMin(k))};
+                end
+                for k=1:size4;
                     WindMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Wind_Production==WindMin(k))};
+                end
+                for k=1:size5;
                     TotalMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMin(k))};
                 end
                 
