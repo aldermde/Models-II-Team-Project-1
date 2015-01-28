@@ -1,5 +1,5 @@
 %Models II Team Project I
-%Group: Duaine Alderman, Cole  McKiever, Michael Stoll, Jacob Fedders
+%Group: Duaine Alderman, Cole McKiever, Michael Stoll, Jacob Fedders
 %
 %This program loads a set of data and provides the user with options on how
 %to anlaze it.
@@ -152,9 +152,9 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                     Nuclear1=sort(Electricity_Data.Nuclear_Production(X1));
                     Nuclear2=sort(Electricity_Data.Nuclear_Production(X1),'descend');
 
-                     size2=numel(X1)
+                     size2=numel(X1);
                     if size2<10;
-                        size2=numel(X1)
+                        size2=numel(X1);
                     elseif size2 >=10
                         size2=10;
                     end
@@ -221,7 +221,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                        end
                        for k=1:size5; 
                            TotalMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMax(k))};
-                    end
+                       end
 
                     %Country Location Min
                     for k=1:size1;
@@ -237,7 +237,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                         WindMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Wind_Production==WindMin(k))};
                     end
                     for k=1:size5;
-                        TotalMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMin(k))};
+                        TotalMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMin(k))}; %#ok<*FNDSB>
                     end
 
 
@@ -359,7 +359,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
                 end  % end close menu
        end
         
-end
+    end
     
     %End Year Analysis
     
@@ -437,7 +437,7 @@ end
             
             %Line graph of production types per year
             for l = 1990:2011
-                productionHydro(l-1989) = Electricity_Data.Hydro_Production(find(Electricity_Data.Year == l & strcmp(Electricity_Data.Country, countryChoice) == 1));
+                productionHydro(l-1989) = Electricity_Data.Hydro_Production(find(Electricity_Data.Year == l & strcmp(Electricity_Data.Country, countryChoice) == 1)); %#ok<*SAGROW>
                 if productionHydro(l-1989) == -9999
                     productionHydro(l-1989) = 0;
                 end
@@ -564,7 +564,7 @@ end
             end  % end close menu
         end %end line 124 if structure
     end
-%End Country Data Analysis
+    %End Country Data Analysis
     
     
 
