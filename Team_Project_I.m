@@ -1,5 +1,5 @@
 %Models II Team Project I
-%Group: Duaine, Cole, Michael, Jacob Fedders
+%Group: Duaine Alderman, Cole  McKiever, Michael Stoll, Jacob Fedders
 %
 %This program loads a set of data and provides the user with options on how
 %to anlaze it.
