@@ -15,13 +15,13 @@ load Electricity_Data.mat;
 %Clearing some of the bad values.
 %The rest are done below and were done before this was written.
 %Not moving them up here.
-for r = 1:5170
+for r = 1:5170 %Begin Duaine's code
     if Electricity_Data.Total_Production(r) == -9999
         Electricity_Data.Total_Production(r) = 0;
     elseif Electricity_Data.Demand(r) == -9999
         Electricity_Data.Demand(r) = 0;
     end
-end
+end %End Duaine's code
 
 val = 0;
 Super_Awesome = val;
@@ -368,7 +368,7 @@ end
     
     
     %Country Analysis
-    while val == 20 
+    while val == 20 %Begin Duaine and Jacob's code
         countryChoice = menu('Please select a country:', 'America', 'Australia', 'Brazil', 'Canada', 'China', 'Cuba', 'Germany', 'India', 'Japan', 'Madagascar', 'Input Other','Back');
                 if countryChoice == 11 %chooses to input country
                     fprintf('Warning: Entries are case sensitive.\n\n');
@@ -480,7 +480,7 @@ end
             subplot(2,2,4);
             bar(year, surplus);
             title('Energy Surplus Per Year');
-            xlabel('Year');ylabel('Energy (Million kWh)');
+            xlabel('Year');ylabel('Energy (Million kWh)'); %End Duaine and Jacob's code
             %end Energy surplus and deficit
             
             %Master Title
@@ -814,3 +814,9 @@ pause(0.5);
 close;
 pause(2);
 clc;
+
+%Part 1 analysis created by Michael.
+%Part 2 analysis created by Duaine and Jacob.
+%part 3 analysis created by Cole.
+%Beginning menu framework created by Duaine.
+%Back buttons and while loop jungle created by Jacob.
