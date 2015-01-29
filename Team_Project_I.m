@@ -1,5 +1,5 @@
 %Models II Team Project I
-%Group: Duaine Alderman, Cole McKiever, Michael Stoll, Jacob Fedders
+%Group: Duaine, Cole, Michael, Jacob Fedders
 %
 %This program loads a set of data and provides the user with options on how
 %to anlaze it.
@@ -15,13 +15,13 @@ load Electricity_Data.mat;
 %Clearing some of the bad values.
 %The rest are done below and were done before this was written.
 %Not moving them up here.
-for r = 1:5170 %Begin Duaine's code
+for r = 1:5170
     if Electricity_Data.Total_Production(r) == -9999
         Electricity_Data.Total_Production(r) = 0;
     elseif Electricity_Data.Demand(r) == -9999
         Electricity_Data.Demand(r) = 0;
     end
-end %End Duaine's code
+end
 
 val = 0;
 Super_Awesome = val;
@@ -81,285 +81,371 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
           val = 1;
        end
        
-       if val ~= 1 %Skips Analysis if user selects back
-           
-           while (yearChoice > 2011 || yearChoice < 1990) && yearChoice ~= 1 %error catch || entered year out of range
-               fprintf('%i is not within the desired range. \n\n',yearChoice);
+       while (yearChoice > 2011 || yearChoice < 1990) && yearChoice ~= 1 %error catch || entered year out of range
+           fprintf('%i is not within the desired range. \n\n',yearChoice);
+           fprintf('Please select a year from 1990 to 2011 \n \nTo go back, enter ''1''.\n\n');
+           commandwindow;
+           yearChoice = input('Year: ');
+           clc;
+           while isempty(yearChoice) %error catch || press enter with no number
                fprintf('Please select a year from 1990 to 2011 \n \nTo go back, enter ''1''.\n\n');
                commandwindow;
                yearChoice = input('Year: ');
                clc;
-               while isempty(yearChoice) %error catch || press enter with no number
-                   fprintf('Please select a year from 1990 to 2011 \n \nTo go back, enter ''1''.\n\n');
-                   commandwindow;
-                   yearChoice = input('Year: ');
-                   clc;
-               end
-               if yearChoice == 1 % choose to go back
-                   val = 1;
-               end
            end
-
-           %menu of how to analyze year data
-           chartChoice=menu('Please select how you would like to view this information.','Pie Chart of Power Used','Graphs of Contribuiters');
-            switch chartChoice;
-                case 1 %The user has chose to look at a pie chart of production for that year
-                    X=find(Electricity_Data.Hydro_Production >-9999 & Electricity_Data.Year==yearChoice);
-                    HydroSum=sum(Electricity_Data.Hydro_Production(X)); %Summ of all the Hydro Production for that year
-
-                    Y=find(Electricity_Data.Nuclear_Production >-9999 & Electricity_Data.Year==yearChoice);
-                    NuclearSum=sum(Electricity_Data.Nuclear_Production(Y)); % Sum of all of the Nuclear Production for that year
-
-                    Z=find(Electricity_Data.Solar_Production >-9999 & Electricity_Data.Year==yearChoice);
-                    SolarSum=sum(Electricity_Data.Solar_Production(Z)); %Sum of all the Solar Production for that year
-
-                    W=find(Electricity_Data.Wind_Production >-9999 & Electricity_Data.Year==yearChoice);
-                    WindSum=sum(Electricity_Data.Wind_Production(W)); % Sum of all the Wind Production for that year
-
-                    PieInfo= [HydroSum NuclearSum SolarSum WindSum];
-
-                    Names= {'Hydro','Nuclear','Solar','Wind'}; %Placing those sums into a pie chart with labels
-
-
-
-                    PieChart= pie3(PieInfo);
-                    legend(Names,'Location','SouthEast');
-                    str=sprintf('Pie Chart Of How Power Was Used In %d',yearChoice);
-                    title(str,'FontSize',15);
-
-
-                case 2 % The user has chosen to look at the top and bottom contributors for that year
-                    contributerChoice=menu('Would you like to see the top contibuters or the bottom contributers?','Top Ten Contributers','Bottom Ten Contributers');
-
-
-                    % Hydro Min & Max
-
-                    X=find(Electricity_Data.Hydro_Production> -9999 & Electricity_Data.Year==yearChoice);
-                    Hydro1=sort(Electricity_Data.Hydro_Production(X));
-                    Hydro2=sort(Electricity_Data.Hydro_Production(X),'descend');
-
-                     size1=numel(X);
-                    if size1<10
-                        size1=numel(X);
-                    elseif size1 >=10
-                        size1=10;
-                    end
-                    HydroMin=Hydro1(1:size1);
-                    HydroMax=Hydro2(1:size1);
-
-                    %Nuclear Min & Max
-                    X1=find(Electricity_Data.Nuclear_Production> -9999 & Electricity_Data.Year==yearChoice);
-                    Nuclear1=sort(Electricity_Data.Nuclear_Production(X1));
-                    Nuclear2=sort(Electricity_Data.Nuclear_Production(X1),'descend');
-
-                     size2=numel(X1);
-                    if size2<10;
-                        size2=numel(X1);
-                    elseif size2 >=10
-                        size2=10;
-                    end
-
-                       NuclearMin=Nuclear1(1:size2);
-                    NuclearMax=Nuclear2(1:size2);
-
-
-                    %Solar Min & Max
-                    X2=find(Electricity_Data.Solar_Production> -9999 & Electricity_Data.Year==yearChoice);
-                    Solar1=sort(Electricity_Data.Solar_Production(X2));
-                    Solar2=sort(Electricity_Data.Solar_Production(X2),'descend');
-
-
-                     size3=numel(X2);
-                    if size3<10
-                        size3=numel(X2);
-                    elseif size3 >=10
-                        size3=10;
-                    end
-
-                    SolarMin=Solar1(1:size3);
-                    SolarMax=Solar2(1:size3);
-                    %Wind Min & Max
-                    X3=find(Electricity_Data.Wind_Production> -9999 & Electricity_Data.Year==yearChoice);
-                    Wind1=sort(Electricity_Data.Wind_Production(X3));
-                    Wind2=sort(Electricity_Data.Wind_Production(X3),'descend');
-
-
-                     size4=numel(X3);
-                    if size4<10
-                        size4=numel(X3);
-                    elseif size4 >=10
-                        size4=10;
-                    end
-                    WindMin=Wind1(1:size4);
-                    WindMax=Wind2(1:size4);
-                    %Total Min & Max
-                    X4=find(Electricity_Data.Total_Production> -9999 & Electricity_Data.Year==yearChoice & Electricity_Data.Demand > -9999);
-                    Total1=sort(Electricity_Data.Total_Production(X4));
-                    Total2=sort(Electricity_Data.Total_Production(X4),'descend');
-
-
-                     size5=numel(X4);
-                    if size5<10;
-                        size5=numel(X4);
-                    elseif size5 >=10;
-                        size5=10;
-                    end
-                     TotalMin=Total1(1:size5);
-                    TotalMax=Total2(1:size5);
-                    %Country Location Max
-                    for k=1:size1;
-                        HydroMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Hydro_Production==HydroMax(k))};
-                    end
-                      for k=1:size2; 
-                          NuclearMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Nuclear_Production==NuclearMax(k))};
-                      end
-                         for k=1:size3;
-                             SolarMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Solar_Production==SolarMax(k))};
-                         end
-                       for k=1:size4; 
-                           WindMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Wind_Production==WindMax(k))};
-                       end
-                       for k=1:size5; 
-                           TotalMaxCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMax(k))};
-                       end
-
-                    %Country Location Min
-                    for k=1:size1;
-                        HydroMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Hydro_Production==HydroMin(k))};
-                    end
-                    for k=1:size2;
-                        NuclearMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Nuclear_Production==NuclearMin(k))};
-                    end
-                    for k=1:size3;
-                        SolarMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Solar_Production==SolarMin(k))};
-                    end
-                    for k=1:size4;
-                        WindMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Wind_Production==WindMin(k))};
-                    end
-                    for k=1:size5;
-                        TotalMinCountries{k}=Electricity_Data.Country{find(Electricity_Data.Total_Production==TotalMin(k))}; %#ok<*FNDSB>
-                    end
-
-
-                    switch contributerChoice
-                        case 1
-                            %Hydro Max Contributers
-                            figure;
-                            bar(HydroMax,'b');
-                            title('Top ten Hydro Contributers');
-                            set(gca,'XTick',1:length(HydroMaxCountries'));
-                            set(gca,'XTickLabel',HydroMaxCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Nuclear Max Contributers
-                            figure;
-                            bar(NuclearMax,'g');
-                            title('Top Ten Nuclear Contributers');
-                            set(gca,'XTick',1:length(NuclearMaxCountries'));
-                            set(gca,'XTickLabel',NuclearMaxCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Solar Max Contributers
-                            figure;
-                            bar(SolarMax,'y');
-                            title('Top Ten Solar Contributers');
-                            set(gca,'XTick',1:length(SolarMaxCountries'));
-                            set(gca,'XTickLabel',SolarMaxCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Wind Max Contributers
-                            figure;
-                            bar(WindMax,'m');
-                            title('Top Ten Wind Contributers');
-                            set(gca,'XTick',1:length(WindMaxCountries'));
-                            set(gca,'XTickLabel',WindMaxCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Total Max Contributers
-                            figure;
-                            bar(TotalMax,'r');
-                            title('Top Ten Total Contributers');
-                            set(gca,'XTick',1:length(TotalMaxCountries'));
-                            set(gca,'XTickLabel',TotalMaxCountries');
-                            ylabel('Power (kWh,millions)');
-
-
-                        case 2
-                            %Hydro Min Contributers
-                            figure;
-                            bar(HydroMin,'b');
-                            title('Bottom Ten Hydro Contributers');
-                            set(gca,'XTick',1:length(HydroMinCountries'));
-                            set(gca,'XTickLabel',HydroMinCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Nuclear Min Contributers
-                            figure;
-                            bar(NuclearMin,'g');
-                            title('Bottom Ten Nuclear Contributers');
-                            set(gca,'XTick',1:length(NuclearMinCountries'));
-                            set(gca,'XTickLabel',NuclearMinCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Solar Min Contributers
-                            figure;
-                            bar(SolarMin,'y');
-                            title('Bottom Ten Solar Contributers');
-                            set(gca,'XTick',1:length(SolarMinCountries'));
-                            set(gca,'XTickLabel',SolarMinCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Wind Min Contributers
-                            figure;
-                            bar(WindMin,'m');
-                            title('Bottom Ten Wind Contributers');
-                            set(gca,'XTick',1:length(WindMinCountries'));
-                            set(gca,'XTickLabel',WindMinCountries');
-                            ylabel('Power (kWh,millions)');
-
-                            %Total Min Contributers
-                            figure;
-                            bar(TotalMin,'r');
-                            title('Bottom Ten Total Contributers');
-                            set(gca,'XTick',1:length(TotalMinCountries'));
-                            set(gca,'XTickLabel',TotalMinCountries');
-                            ylabel('Power (kWh,millions)');
-                    end
-            end
-
-            %Ask the user what they want to do next
-            nextChoice = menu('Now what would you like to do?','Analyze a year','Analyze a country','Analyze a production type','End program');
-
-                if nextChoice == 1
-                    val = 10;
-                elseif nextChoice == 2
-                    val = 20;
-                elseif nextChoice == 3
-                    val = 30;
-                elseif nextChoice == 4
-                    val = -1;
-                    Super_Awesome = 7;
+           if yearChoice == 1 % choose to go back
+               val = 1;
+           end
+       end
+       
+       %menu of how to analyze year data
+       chartChoice=menu('Please select how you would like to view this information.','Pie Chart of Power Used','Graphs of Contribuiters');
+        switch chartChoice;
+            case 1 %The user has chose to look at a pie chart of production for that year
+                X=find(Electricity_Data.Hydro_Production >-9999 & Electricity_Data.Year==yearChoice);
+                HydroSum=sum(Electricity_Data.Hydro_Production(X)); %Summ of all the Hydro Production for that year
+                
+                Y=find(Electricity_Data.Nuclear_Production >-9999 & Electricity_Data.Year==yearChoice);
+                NuclearSum=sum(Electricity_Data.Nuclear_Production(Y)); % Sum of all of the Nuclear Production for that year
+                
+                Z=find(Electricity_Data.Solar_Production >-9999 & Electricity_Data.Year==yearChoice);
+                SolarSum=sum(Electricity_Data.Solar_Production(Z)); %Sum of all the Solar Production for that year
+                
+                W=find(Electricity_Data.Wind_Production >-9999 & Electricity_Data.Year==yearChoice);
+                WindSum=sum(Electricity_Data.Wind_Production(W)); % Sum of all the Wind Production for that year
+                
+                PieInfo= [HydroSum NuclearSum SolarSum WindSum];
+                
+                Names= {'Hydro','Nuclear','Solar','Wind'}; %Placing those sums into a pie chart with labels
+                
+                
+                
+                PieChart= pie3(PieInfo);
+                legend(Names,'Location','SouthEast');
+                str=sprintf('Pie Chart Of How Power Was Used In %d',yearChoice);
+                title(str,'FontSize',15);
+                
+                
+            case 2 % The user has chosen to look at the top and bottom contributors for that year
+                contributerChoice=menu('Would you like to see the top contibuters or the bottom contributers?','Top Ten Contributers','Bottom Ten Contributers');
+               
+                
+                % Hydro Min & Max
+                
+                X=find(Electricity_Data.Hydro_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Hydro1=sort(Electricity_Data.Hydro_Production(X));
+                Hydro2=sort(Electricity_Data.Hydro_Production(X),'descend');
+                
+                size1=numel(X);
+                if size1<10
+                    size1=numel(X);
+                elseif size1 >=10
+                    size1=10;
+                end
+                
+                size12=numel(Hydro2); %Max
+                if size12<10;
+                elseif size12 >=numel(Hydro2);
+                    size12=10;
+                end
+                HydroMin=Hydro1(1:size1);
+                HydroMax=Hydro2(1:size12);
+                
+                %Nuclear Min & Max
+                X1=find(Electricity_Data.Nuclear_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Nuclear1=sort(Electricity_Data.Nuclear_Production(X1));
+                Nuclear2=sort(Electricity_Data.Nuclear_Production(X1),'descend');
+                
+                size2=numel(X1);
+                if size2<10
+                    size2=numel(X1);
+                elseif size2 >=10
+                    size2=10;
+                end
+                size22=numel(Nuclear2); %Max
+                if size22<10;
+                    size22=numel(Nuclear2);
+                elseif size22 >=10;
+                    size22=10;
+                end
+                
+                NuclearMin=Nuclear1(1:size2);
+                NuclearMax=Nuclear2(1:size22);
+                
+                
+                %Solar Min & Max
+                X2=find(Electricity_Data.Solar_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Solar1=sort(Electricity_Data.Solar_Production(X2));
+                Solar2=sort(Electricity_Data.Solar_Production(X2),'descend');
+                
+                
+                size3=numel(X2);
+                if size3<10
+                    size3=numel(X2);
+                elseif size3 >=10
+                    size3=10;
+                end
+                size32=numel(Solar2); %Max
+                if size32<10;
+                    size32=numel(Solar2);
+                elseif size32 >=10;
+                    size32=10;
+                end
+                
+                SolarMin=Solar1(1:size3);
+                SolarMax=Solar2(1:size32);
+                %Wind Min & Max
+                X3=find(Electricity_Data.Wind_Production> -9999 & Electricity_Data.Year==yearChoice);
+                Wind1=sort(Electricity_Data.Wind_Production(X3));
+                Wind2=sort(Electricity_Data.Wind_Production(X3),'descend');
+                
+                
+                size4=numel(X3);
+                if size4<10;
+                    size4=numel(X3);
+                elseif size4 >=10;
+                    size4=10;
+                end
+                size42=numel(Wind2); %Max
+                if size42<10;
+                    size42=numel(Wind2);
+                elseif size42 >=10;
+                    size42=10;
+                end
+                WindMin=Wind1(1:size4);
+                WindMax=Wind2(1:size42);
+                %Total Min & Max
+                X4=find(Electricity_Data.Total_Production> -9999 & Electricity_Data.Year==yearChoice & Electricity_Data.Demand > -9999);
+                Total1=sort(Electricity_Data.Total_Production(X4));
+                Total2=sort(Electricity_Data.Total_Production(X4),'descend');
+                
+                
+                size5=numel(X4);
+                if size5<10;
+                    size5=numel(X4);
+                elseif size5 >=10;
+                    size5=10;
+                end
+                size52=numel(Total2); %Max
+                if size52<10;
+                    size52=numel(Total2);
+                elseif size52 >=10;
+                    size52=10;
+                end
+                
+                TotalMin=Total1(1:size5);
+                TotalMax=Total2(1:size52);
+                %Country Location Max
+                %HydroMax
+                HydroMaxCountries={};
+                index1=1;
+                while index1<= length(HydroMax);
+                    q1=find(Electricity_Data.Hydro_Production==HydroMax(index1) & Electricity_Data.Year==yearChoice);
+                    HydroMaxCountries(end+1:end+length(q1))=Electricity_Data.Country(q1);
+                    index1=index1+length(q1-1);
+                end
+                
+               %NuclearMax 
+                NuclearMaxCountries={};
+                index2=1;
+                while index2<= length(NuclearMax);
+                    q2=find(Electricity_Data.Nuclear_Production==NuclearMax(index2) & Electricity_Data.Year==yearChoice);
+                    NuclearMaxCountries(end+1:end+length(q2))=Electricity_Data.Country(q2);
+                    index2=index2+length(q2-1);
                 end
 
-                clc;
+                %SolarMax
+                SolarMaxCountries={};
+                index3=1;
+                while index3<= length(SolarMax);
+                    q3=find(Electricity_Data.Solar_Production==SolarMax(index3) & Electricity_Data.Year==yearChoice);
+                    SolarMaxCountries(end+1:end+length(q3))=Electricity_Data.Country(q3);
+                    index3=index3+length(q3-1);
+                end
 
-            %Asks the user what charts they want to keep open
-            closeChoice = menu('Do you want to keep any charts open?','Keep all charts','Close only the most recent chart','Close all charts');
+                %WindMax
+                WindMaxCountries={};
+                index4=1;
+                while index4<= length(WindMax);
+                    q4=find(Electricity_Data.Wind_Production==WindMax(index4) & Electricity_Data.Year==yearChoice);
+                    WindMaxCountries(end+1:end+length(q4))=Electricity_Data.Country(q4);
+                    index4=index4+length(q4-1);
+                end
 
-                if closeChoice == 2  % close only most recent
-                    if chartChoice == 2
-                        for k = 1:5 %Clears 5 charts
-                            close;
-                        end
-                    else
+                %TotalMax
+                TotalMaxCountries={};
+                index5=1;
+                while index5<= length(TotalMax);
+                    q5=find(Electricity_Data.Total_Production==TotalMax(index5) & Electricity_Data.Year==yearChoice);
+                    TotalMaxCountries(end+1:end+length(q5))=Electricity_Data.Country(q5);
+                    index5=index5+length(q5-1);
+                end
+                
+                %Country Location Min
+                %HydroMin
+                HydroMinCountries={};
+                index6=1;
+                while index6<= length(HydroMin);
+                    q6=find(Electricity_Data.Hydro_Production==HydroMin(index6) & Electricity_Data.Year==yearChoice);
+                    HydroMinCountries(end+1:end+length(q6))=Electricity_Data.Country(q6);
+                    index6=index6+length(q6-1);
+                end
+                
+                %NuclearMin
+                NuclearMinCountries={};
+                index7=1;
+                while index7<= length(NuclearMin);
+                    q7=find(Electricity_Data.Nuclear_Production==NuclearMin(index7) & Electricity_Data.Year==yearChoice);
+                    NuclearMinCountries(end+1:end+length(q7))=Electricity_Data.Country(q7);
+                    index7=index7+length(q7-1);
+                end
+                
+                %SolarMin
+                SolarMinCountries={};
+                index8=1;
+                while index8<= length(SolarMin);
+                    q8=find(Electricity_Data.Solar_Production==SolarMin(index8) & Electricity_Data.Year==yearChoice);
+                    SolarMinCountries(end+1:end+length(q8))=Electricity_Data.Country(q8);
+                    index8=index8+length(q8-1);
+                end
+                
+                %WindMin
+                WindMinCountries={};
+                index9=1;
+                while index9<= length(WindMin);
+                    q9=find(Electricity_Data.Wind_Production==WindMin(index9) & Electricity_Data.Year==yearChoice);
+                    WindMinCountries(end+1:end+length(q9))=Electricity_Data.Country(q9);
+                    index9=index9+length(q9-1);      
+                end
+
+                %TotalMin
+                TotalMinCountries={};
+                index10=1;
+                while index10<= length(TotalMin);
+                    q10=find(Electricity_Data.Total_Production==TotalMin(index10) & Electricity_Data.Year==yearChoice);
+                    TotalMinCountries(end+1:end+length(q10))=Electricity_Data.Country(q10);
+                    index10=index10+length(q10-1);
+                end
+                
+                
+                switch contributerChoice
+                    case 1
+                        %Hydro Max Contributers
+                        figure;
+                        bar(HydroMax,'b');
+                        title('Top ten Hydro Contributers');
+                        set(gca,'XTick',1:size12);
+                        set(gca,'XTickLabel',HydroMaxCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Nuclear Max Contributers
+                        figure;
+                        bar(NuclearMax,'g');
+                        title('Top Ten Nuclear Contributers');
+                        set(gca,'XTick',1:size22);
+                        set(gca,'XTickLabel',NuclearMaxCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Solar Max Contributers
+                        figure;
+                        bar(SolarMax,'y');
+                        title('Top Ten Solar Contributers');
+                        set(gca,'XTick',1:size32);
+                        set(gca,'XTickLabel',SolarMaxCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Wind Max Contributers
+                        figure;
+                        bar(WindMax,'m');
+                        title('Top Ten Wind Contributers');
+                        set(gca,'XTick',1:size42);
+                        set(gca,'XTickLabel',WindMaxCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Total Max Contributers
+                        figure;
+                        bar(TotalMax,'r');
+                        title('Top Ten Total Contributers');
+                        set(gca,'XTick',1:size52);
+                        set(gca,'XTickLabel',TotalMaxCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        
+                    case 2
+                        %Hydro Min Contributers
+                        figure;
+                        bar(HydroMin,'b');
+                        title('Bottom Ten Hydro Contributers');
+                        set(gca,'XTick',1:size1);
+                        set(gca,'XTickLabel',HydroMinCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Nuclear Min Contributers
+                        figure;
+                        bar(NuclearMin,'g');
+                        title('Bottom Ten Nuclear Contributers');
+                        set(gca,'XTick',1:size2);
+                        set(gca,'XTickLabel',NuclearMinCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Solar Min Contributers
+                        figure;
+                        bar(SolarMin,'y');
+                        title('Bottom Ten Solar Contributers');
+                        set(gca,'XTick',1:size3);
+                        set(gca,'XTickLabel',SolarMinCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Wind Min Contributers
+                        figure;
+                        bar(WindMin,'m');
+                        title('Bottom Ten Wind Contributers');
+                        set(gca,'XTick',1:size4);
+                        set(gca,'XTickLabel',WindMinCountries');
+                        ylabel('Power (kWh,millions)');
+                        
+                        %Total Min Contributers
+                        figure;
+                        bar(TotalMin,'r');
+                        title('Bottom Ten Total Contributers');
+                        set(gca,'XTick',1:size5);
+                        set(gca,'XTickLabel',TotalMinCountries');
+                        ylabel('Power (kWh,millions)');
+                end
+        end
+        
+        %Ask the user what they want to do next
+        nextChoice = menu('Now what would you like to do?','Analyze a year','Analyze a country','Analyze a production type','End program');
+            
+            if nextChoice == 1
+                val = 10;
+            elseif nextChoice == 2
+                val = 20;
+            elseif nextChoice == 3
+                val = 30;
+            elseif nextChoice == 4
+                val = -1;
+                Super_Awesome = 7;
+            end
+            
+            clc;
+        
+        %Asks the user what charts they want to keep open
+        closeChoice = menu('Do you want to keep any charts open?','Keep all charts','Close only the most recent chart','Close all charts');
+                                               
+            if closeChoice == 2  % close only most recent
+                if chartChoice == 2
+                    for k = 1:5 %Clears 5 charts
                         close;
                     end
-                elseif closeChoice == 3  % close EVERYTHING
-                    close all;
-                end  % end close menu
-       end
+                else
+                    close;
+                end
+            elseif closeChoice == 3  % close EVERYTHING
+                close all;
+            end  % end close menu
         
-    end
+end
     
     %End Year Analysis
     
@@ -371,7 +457,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
     
     
     %Country Analysis
-    while val == 20 %Begin Duaine and Jacob's code
+    while val == 20 
         countryChoice = menu('Please select a country:', 'America', 'Australia', 'Brazil', 'Canada', 'China', 'Cuba', 'Germany', 'India', 'Japan', 'Madagascar', 'Input Other','Back');
                 if countryChoice == 11 %chooses to input country
                     fprintf('Warning: Entries are case sensitive.\n\n');
@@ -437,7 +523,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
             
             %Line graph of production types per year
             for l = 1990:2011
-                productionHydro(l-1989) = Electricity_Data.Hydro_Production(find(Electricity_Data.Year == l & strcmp(Electricity_Data.Country, countryChoice) == 1)); %#ok<*SAGROW>
+                productionHydro(l-1989) = Electricity_Data.Hydro_Production(find(Electricity_Data.Year == l & strcmp(Electricity_Data.Country, countryChoice) == 1));
                 if productionHydro(l-1989) == -9999
                     productionHydro(l-1989) = 0;
                 end
@@ -483,7 +569,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
             subplot(2,2,4);
             bar(year, surplus);
             title('Energy Surplus Per Year');
-            xlabel('Year');ylabel('Energy (Million kWh)'); %End Duaine and Jacob's code
+            xlabel('Year');ylabel('Energy (Million kWh)');
             %end Energy surplus and deficit
             
             %Master Title
@@ -564,7 +650,7 @@ while Doctor_Bucks == Super_Awesome %Obligatory brown nosing
             end  % end close menu
         end %end line 124 if structure
     end
-    %End Country Data Analysis
+%End Country Data Analysis
     
     
 
@@ -817,9 +903,3 @@ pause(0.5);
 close;
 pause(2);
 clc;
-
-%Part 1 analysis created by Michael.
-%Part 2 analysis created by Duaine and Jacob.
-%part 3 analysis created by Cole.
-%Beginning menu framework created by Duaine.
-%Back buttons and while loop jungle created by Jacob.
